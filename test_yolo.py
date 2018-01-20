@@ -15,10 +15,14 @@ from yad2k.models.keras_yolo import yolo_eval, yolo_head
 
 parser = argparse.ArgumentParser(
     description='Run a YOLO_v2 style detection model on test images..')
+
 parser.add_argument(
-    'model_path',
+    '-m',
+    '--model_path',
     help='path to h5 model file containing body'
-    'of a YOLO_v2 model')
+    'of a YOLO_v2 model',
+    default = 'model_data/yolo.h5')
+
 parser.add_argument(
     '-a',
     '--anchors_path',
@@ -52,6 +56,9 @@ parser.add_argument(
     help='threshold for non max suppression IOU, default .5',
     default=.5)
 
+parser.add_argument(
+    'file_name',
+)
 
 def _main(args):
     model_path = os.path.expanduser(args.model_path)
@@ -60,6 +67,7 @@ def _main(args):
     classes_path = os.path.expanduser(args.classes_path)
     test_path = os.path.expanduser(args.test_path)
     output_path = os.path.expanduser(args.output_path)
+    f_n = args.file_name
 
     if not os.path.exists(output_path):
         print('Creating output path {}'.format(output_path))
@@ -114,7 +122,10 @@ def _main(args):
         score_threshold=args.score_threshold,
         iou_threshold=args.iou_threshold)
 
-    for image_file in os.listdir(test_path):
+    file_list = []
+    file_list.append(f_n)
+
+    for image_file in file_list:
         try:
             image_type = imghdr.what(os.path.join(test_path, image_file))
             if not image_type:

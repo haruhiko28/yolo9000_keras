@@ -322,7 +322,7 @@ def yolo_filter_boxes(boxes, box_confidence, box_class_probs, threshold=.6):
 
 def yolo_eval(yolo_outputs,
               image_shape,
-              max_boxes=10,
+              max_boxes=100,
               score_threshold=.6,
               iou_threshold=.5):
     """Evaluate YOLO model on given input batch and return filtered boxes."""
